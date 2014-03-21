@@ -97,7 +97,8 @@ $(document).ready(function(){
 			$.cookie('best-color', scoreColor, {expires: 4000});
 		};
 		prevcell = $curcell;
-
+		if(cnt >= 100)
+			alert('YOU WIN!! contratulations. Refresh the page to restart. (I will develop this feature as soon as possible!)')
 	}
 	
 	// Check if a given cell is already filled
@@ -113,14 +114,18 @@ $(document).ready(function(){
 	
 	// Set the next candidate cells
 	function setNext($curcell){
+		var nextNum = 0;
 		nextCoords.forEach(function(entry){
 			var x = entry[1] + curx;
 			var y = entry[0] + cury;
 			if(x >= 1 && x <= 10 && y >= 1 && y <= 10){
 				var $nextcell = getCell(x,y);
-				changeCellColor($nextcell, nextColor, nextShadow);
+				if(changeCellColor($nextcell, nextColor, nextShadow))
+					nextNum += 1;
 			}
 		});
+		if(nextNum == 0)
+			alert('Game Over!!!. Refresh the page to retry. (I will develop this feature as soon as possible!)');
 	}
 	
 	// Highlight a cell as active, because the user is pointing at it
@@ -170,7 +175,10 @@ $(document).ready(function(){
 				cell.animate({backgroundColor: color}, 100);
 				cell.animate({boxShadow: shadow}, 200);
 			}
+			return true;
 		}
+		else
+			return false;
 	}
 	
 	// Updates the game state
