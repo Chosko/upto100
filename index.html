@@ -22,7 +22,23 @@
 		<div class="small-wrapper">
 			<div id="game-container">
 				<div id="main-grid">
-					<h1>Up to 100!</h1>
+					<div class="row">
+						<div class="col-sm-6">
+							<h1>Up to 100!</h1>
+						</div>
+						<div class="col-sm-3">
+							<div class="score">
+								Score<br />
+								<span id="score">0</span>
+							</div>
+						</div>
+						<div class="col-sm-3">
+							<div class="score">
+								Best<br />
+								<span id="best">0</span>
+							</div>
+						</div>
+					</div>
 					<div class="grid-row clearfix">
 						<div class="grid-cell" data-coord="1-1"></div>
 						<div class="grid-cell" data-coord="1-2"></div>
@@ -148,12 +164,13 @@
 		</div>	
 	</div>
 	
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="js/jquery-1.11.0.js"></script>
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <script src="js/jquery-1.11.0.js"></script>
 	<script src="js/jquery-ui-1.10.4.custom.js"></script>
 	<script src="js/jquery.animate-shadow.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="js/bootstrap.min.js"></script>
+	<script src="js/jquery.cookie.js"></script>
+  <!-- Include all compiled plugins (below), or include individual files as needed -->
+  <script src="js/bootstrap.min.js"></script>
 	<!-- Include the keyboard js -->
 	<script src="js/keyboard.js"></script>
 	<!-- Include the game js -->

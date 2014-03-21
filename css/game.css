@@ -19,6 +19,8 @@ h1{
 	text-align: center;
 	margin: 0;
 	line-height: 87px;
+	font-variant: small-caps;
+	font-weight: bold;
 }
 
 .big-wrapper{
@@ -26,6 +28,21 @@ h1{
 	width: 100%;
 	height: 100%;
 	min-height: 100%;
+}
+
+.score{
+	font-size: 20px;
+	border-radius: 6px;
+	margin: 10px;
+	background-color: rgba(0,0,0,0.2);
+	height: 61px;
+	width: 103px;
+	font-variant: small-caps;
+	font-weight: bold;
+}
+
+#score, #best{
+	text-shadow: 1px 1px 2px #000;
 }
 
 .small-wrapper{
@@ -38,9 +55,9 @@ h1{
 }
 
 #main-grid{
-	padding: 6px 6px 1px 1px;
+	padding: 0px 11px 5px 6px;
 	background-color: rgba(0,0,0,0.2);
-	border-radius: 3px;
+	border-radius: 16px;
 	position: relative;
 	clear: both;
 	display: table;

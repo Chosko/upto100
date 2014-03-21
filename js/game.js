@@ -82,12 +82,22 @@ $(document).ready(function(){
 		}
 		incrementCounters();
 		var newColor = 'rgba(' + bg_r + ',' + bg_g + ',' + bg_b + ',0.5)';
-		$curcell.animate({boxShadow: no_shadow, backgroundColor: newColor}, 200, 'linear', function(){
-			$(this).css('box-shadow', 'outset 0 0 0 0 #000').animate({boxShadow: nextShadow});
+		$curcell.animate({boxShadow: no_shadow, backgroundColor: newColor}, 150, 'linear', function(){
+			$(this).css('box-shadow', 'outset 0 0 0 0 #000').animate({boxShadow: nextShadow}, 150, 'linear');
 		});
 		$curcell.text(cnt);
 		$curcell.attr('data-filled', 'true');
+		$('#score').text(cnt);
+		var scoreColor = 'rgba(' + bg_r + ',' + bg_g + ',' + bg_b + ',1)';
+		$('#score').animate({color: scoreColor});
+		if (parseInt($('#best').text()) < cnt) {
+			$('#best').text(cnt);
+			$('#best').animate({color: scoreColor});
+			$.cookie('best', $('#best').text(), {expires: 4000});
+			$.cookie('best-color', scoreColor, {expires: 4000});
+		};
 		prevcell = $curcell;
+
 	}
 	
 	// Check if a given cell is already filled
@@ -229,6 +239,14 @@ $(document).ready(function(){
 		keyboard.update(e,false)
 	});
 	
+	// First loop execution: Set the best score
+	if($.cookie('best'))
+	{
+		$('#best').text = $.cookie('best');
+		if($.cookie('best-color'))
+			$('#best').animate({color: $.cookie('best-color')});
+	}
+
 	// First loop execution: Set the current cell
 	setCur();
 	
