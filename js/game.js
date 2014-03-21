@@ -93,6 +93,7 @@ $(document).ready(function(){
 		if (parseInt($('#best').text()) < cnt) {
 			$('#best').text(cnt);
 			$('#best').animate({color: scoreColor});
+			document.cookie = "best=" + $('#best').text() + ;
 			$.cookie('best', $('#best').text(), {expires: 4000});
 			$.cookie('best-color', scoreColor, {expires: 4000});
 		};
@@ -242,7 +243,7 @@ $(document).ready(function(){
 	// First loop execution: Set the best score
 	if($.cookie('best'))
 	{
-		$('#best').text = $.cookie('best');
+		$('#best').text($.cookie('best'));
 		if($.cookie('best-color'))
 			$('#best').animate({color: $.cookie('best-color')});
 	}
