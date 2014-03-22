@@ -98,7 +98,7 @@ $(document).ready(function(){
 		};
 		prevcell = $curcell;
 		if(cnt >= 100)
-			alert('YOU WIN!! contratulations. Refresh the page to restart. (I will develop this feature as soon as possible!)')
+			$('#win-modal').modal();
 	}
 	
 	// Check if a given cell is already filled
@@ -124,8 +124,10 @@ $(document).ready(function(){
 					nextNum += 1;
 			}
 		});
-		if(nextNum == 0)
-			alert('Game Over!!!. Refresh the page to retry. (I will develop this feature as soon as possible!)');
+		if(nextNum == 0){
+			$('#game-over-score').text($('#score').text());
+			$('#game-over-modal').modal();
+		}
 	}
 	
 	// Highlight a cell as active, because the user is pointing at it
@@ -254,6 +256,14 @@ $(document).ready(function(){
 		if($.cookie('best-color'))
 			$('#best').animate({color: $.cookie('best-color')});
 	}
+
+	$("#how-to-button").click(function(){
+		$('#instructions-modal').modal();
+	});
+
+	$("#restart-button").click(function(){
+		alert('this button is under construction! to restart the game refresh the page.')
+	});
 
 	// First loop execution: Set the current cell
 	setCur();

@@ -18,6 +18,57 @@
     <![endif]-->
   </head>
   <body>
+  
+  <div class="modal fade" id="instructions-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	        <h4 class="modal-title" id="myModalLabel">Instructions</h4>
+	      </div>
+	      <div class="modal-body">
+	        Use your arrow keys to select the next move, and try to reach the 100th tile! You can jump 2 tiles horizontally and vertically, but only 1 tile diagonally. If you can't move anymore the game is over.
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
+	<div class="modal fade" id="win-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	        <h4 class="modal-title" id="myModalLabel">You WIN!</h4>
+	      </div>
+	      <div class="modal-body">
+	        Congratulations, you are one of the few people that beat the game!
+	      </div>
+	      <div class="modal-footer">
+	      	<button type="button" class="btn btn-primary">Restart</button>
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
+	<div class="modal fade" id="game-over-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	        <h4 class="modal-title" id="myModalLabel">Game Over</h4>
+	      </div>
+	      <div class="modal-body">
+	        Your score is: <span id="game-over-score"></span>
+	      </div>
+	      <div class="modal-footer">
+	      	<button type="button" class="btn btn-primary">Retry</button>
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
   <div class="big-wrapper">
 		<div class="small-wrapper">
 			<div id="game-container">
@@ -26,16 +77,22 @@
 						<div class="col-xs-6">
 							<h1>Up to 100!</h1>
 						</div>
-						<div class="col-xs-3">
+						<div class="col-xs-2">
 							<div class="score">
 								Score<br />
 								<span id="score">0</span>
 							</div>
 						</div>
-						<div class="col-xs-3">
+						<div class="col-xs-2">
 							<div class="score">
 								Best<br />
 								<span id="best">0</span>
+							</div>
+						</div>
+						<div class="col-xs-2">
+							<div class="game-button-container">
+								<div class="btn-mini btn-default" id="how-to-button">How to</div>
+								<div class="btn-mini btn-default" id="restart-button">Restart</div>
 							</div>
 						</div>
 					</div>
@@ -158,11 +215,6 @@
 						<div class="grid-cell" data-coord="10-8"></div>
 						<div class="grid-cell" data-coord="10-9"></div>
 						<div class="grid-cell" data-coord="10-10"></div>
-					</div>
-				</div>
-				<div class="instructions">
-					<div class="col-sm-4 col-sm-offset-4">
-						<strong>HOW TO PLAY</strong>: Use your arrow keys to select the next move, and try to reach the 100th tile! You can jump 2 tiles horizontally and vertically, but only 1 tile diagonally. If you can't move anymore the game is over.
 					</div>
 				</div>
 			</div>
