@@ -30,6 +30,11 @@ h1{
 	min-height: 100%;
 }
 
+.instructions{
+	margin-top: 10px;
+	font-size: 16px;
+}
+
 .score{
 	font-size: 20px;
 	border-radius: 6px;
