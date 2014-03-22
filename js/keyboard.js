@@ -152,6 +152,7 @@ MyKeyboard.prototype.update = function(e, down){
 			break;
 	}
 	if(willUpdate){
+		e.preventDefault();
 		this.updateAction(e.timestamp);
 		this.onUpdateCallback();
 		this.action = '';
