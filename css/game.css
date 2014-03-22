@@ -60,6 +60,7 @@ h1{
 }
 
 #main-grid{
+	min-width: 567px;
 	padding: 0px 11px 5px 6px;
 	background-color: rgba(0,0,0,0.2);
 	border-radius: 16px;
