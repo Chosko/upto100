@@ -4,36 +4,17 @@ function randInt(min, max) {
 }
 
 $(document).ready(function(){
-	// the color taken by new numbers
-	var bg_r = 0;
-	var bg_g = 120;
-	var bg_b = 255;
-	
-	// control vars for color change
-	var r_inc = true;
-	var g_inc = true;
-	var b_inc = false;
-	
-	// colors of the tiles
+	var $cells = $('.grid-cell'); 													//the cells of the game
 	var nextColor = "rgba(255,255,255,0.1)";
 	var nextShadow = "2px 2px 6px 0px #000";
-	var activeColor = nextColor;//"rgba(255,255,200,0.3)";
+	var activeColor = nextColor;
 	var activeShadow = "inset 2px 2px 6px 0px #000";
 	var fillShadow = "2px 2px 6px 0px #000";
-	
-	var $cells = $('.grid-cell'); 								//the cells of the game
-	var bg_original = $($cells[0]).css('background-color');		//the original bg color of the cells
+	var bg_original = $($cells[0]).css('background-color');	//the original bg color of the cells
 	var shadow_original = $($cells[0]).css('box-shadow');		//the original shadow of the cells
-	var no_shadow = '0 0 0 0 #444';				//the shadow of the filled cells (no shadow)
-	var cnt = 0;															//the current number
-	var curx = randInt(1,10);									//the x coord of the current number
-	var cury = randInt(1,10);									//the y coord of the current number
-	var activex = 0;
-	var activey = 0;
-	var lastaction = '';
+	var no_shadow = '0 0 0 0 #444';													//the shadow of the filled cells (no shadow)
 	var keyboard = new MyKeyboard();
-	var prevcell;
-	
+
 	//all the coords of the next step, relative to the cursor
 	var nextCoords = [
 		[0,3],
@@ -45,6 +26,30 @@ $(document).ready(function(){
 		[-3,0],
 		[-2,2]
 	]
+
+	// vars
+	var bg_r,bg_g,bg_b,r_inc,g_inc,b_inc,cnt,curx,cury,activex,activey,lastaction,prevcell;
+
+	function initGame(){
+		// the color taken by new numbers
+		bg_r = 0;
+		bg_g = 120;
+		bg_b = 255;
+		
+		// control vars for color change
+		r_inc = true;
+		g_inc = true;
+		b_inc = false;
+
+		cnt = 0;															//the current number
+		curx = randInt(1,10);									//the x coord of the current number
+		cury = randInt(1,10);									//the y coord of the current number
+		activex = 0;
+		activey = 0;
+		lastaction = '';
+		prevcell = undefined;
+		setCur();
+	}
 
 	// Increment the counters
 	function incrementCounters(){
@@ -261,12 +266,20 @@ $(document).ready(function(){
 		$('#instructions-modal').modal();
 	});
 
-	$("#restart-button").click(function(){
-		alert('this button is under construction! to restart the game refresh the page.')
+	$(".restart-button").click(function(){
+		resetGame();
 	});
 
+	function resetGame()
+	{
+		$('.grid-cell').attr('data-filled', '');
+		$('.grid-cell').text('');
+		$('.grid-cell').attr('style', '');
+		initGame();
+	}
+
 	// First loop execution: Set the current cell
-	setCur();
+	initGame();
 	
 	// First loop execution: bind the keyboard update event to the game update function
 	keyboard.onUpdate(update);

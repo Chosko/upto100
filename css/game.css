@@ -101,9 +101,17 @@ h1{
 	height: 23px;
 	background-color: rgba(255, 255, 255, 0.0980392);
 	box-shadow: rgb(0, 0, 0) 2px 2px 6px 0px;
+	cursor: pointer;
 }
 
 .game-button-container .btn-mini:hover{
-	background-color: rgba(255, 255, 255, 0.0980392);
+	box-shadow: rgb(0, 0, 0) 1px 1px 3px 0px inset;
+}
+
+.game-button-container .btn-mini:active{
 	box-shadow: rgb(0, 0, 0) 2px 2px 6px 0px inset;
+}
+
+.modal-content{
+	background-color: rgba(255,255,255,0.7);
 }
