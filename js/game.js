@@ -312,6 +312,9 @@ $(document).ready(function(){
 	$(".restart-button").click(function(){
 		resetGame();
 	});
+	$("#credits-button").click(function(){
+		$('#credits-modal').modal();
+	});
 
 	function resetGame()
 	{
