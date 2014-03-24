@@ -2,7 +2,7 @@
 
 Up to 100! is a simple (but very hard) game.
 
-You can <a href="http://chosko.github.io" target="_blank" />PLAY HERE!</a>
+You can <a href="http://chosko.github.io" target="_blank" >PLAY HERE!</a>
 
 ###Goal
 
