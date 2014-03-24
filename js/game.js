@@ -10,10 +10,31 @@ $(document).ready(function(){
 	var activeColor = nextColor;
 	var activeShadow = "inset 2px 2px 6px 0px #000";
 	var fillShadow = "2px 2px 6px 0px #000";
+	var textcolor = $($cells[0]).css('color');
 	var bg_original = $($cells[0]).css('background-color');	//the original bg color of the cells
 	var shadow_original = $($cells[0]).css('box-shadow');		//the original shadow of the cells
 	var no_shadow = '0 0 0 0 #444';													//the shadow of the filled cells (no shadow)
 	var keyboard = new MyKeyboard();
+
+	$cells.hover(function(){
+		$this = $(this);
+		var coord = $this.attr('data-coord').split('-');
+		if($this.attr('data-state') == 'candidate')
+			setActive(parseInt(coord[1]), parseInt(coord[0]));
+	},
+	function(){
+		$this = $(this);
+		var coord = $this.attr('data-coord').split('-');
+		if($this.attr('data-state') == 'active')
+			unsetActive(parseInt(coord[1]), parseInt(coord[0]));
+	});
+	$cells.click(function(){
+		$this = $(this);
+		var coord = $this.attr('data-coord').split('-');
+		if($this.attr('data-state') == 'active'){
+			setNext();
+		}
+	});
 
 	//all the coords of the next step, relative to the cursor
 	var nextCoords = [
@@ -41,14 +62,15 @@ $(document).ready(function(){
 		g_inc = true;
 		b_inc = false;
 
-		cnt = 0;															//the current number
-		curx = randInt(1,10);									//the x coord of the current number
-		cury = randInt(1,10);									//the y coord of the current number
-		activex = 0;
-		activey = 0;
+		cnt = 0;										//the current number
+		curx = -10;									//the x coord of the current number
+		cury = -10;									//the y coord of the current number
+		activex = randInt(1,10);
+		activey = randInt(1,10);
 		lastaction = '';
 		prevcell = undefined;
-		setCur();
+		$cells.css('color', 'rgba(0,0,0,0)');
+		setNext();
 	}
 
 	// Increment the counters
@@ -80,18 +102,38 @@ $(document).ready(function(){
 		cnt += 1;
 	}
 	
-	// Set the new number
-	function setNumber($curcell){
+	// Set the next number
+	function setNext(){
+		var $actcell = getCell(activex, activey);
+		if($actcell && !isFilled($actcell) && (activex != curx || activey != cury))
+		{
+			var oldx = curx;
+			var oldy = cury;
+			curx = activex;
+			cury = activey;
+			nextCoords.forEach(function(entry){
+				var x = entry[1] + oldx;
+				var y = entry[0] + oldy;
+				resetIfEmpty(x, y);
+			});
+		}
+		else
+		{
+			return false;
+		}
+
+		var $curcell = getCell(curx, cury);
 		if(cnt > 0){
 			changeCellColor(prevcell, 'rgba(' + bg_r + ',' + bg_g + ',' + bg_b + ',0.5)', no_shadow, false, true);
 		}
 		incrementCounters();
 		var newColor = 'rgba(' + bg_r + ',' + bg_g + ',' + bg_b + ',0.5)';
-		$curcell.animate({boxShadow: no_shadow, backgroundColor: newColor}, 150, 'linear', function(){
+		$curcell.animate({boxShadow: no_shadow, backgroundColor: newColor, color: textcolor}, 150, 'linear', function(){
 			$(this).css('box-shadow', 'outset 0 0 0 0 #000').animate({boxShadow: nextShadow}, 150, 'linear');
 		});
 		$curcell.text(cnt);
-		$curcell.attr('data-filled', 'true');
+		$curcell.css('cursor', 'default');
+		$curcell.attr('data-state', 'filled');
 		$('#score').text(cnt);
 		var scoreColor = 'rgba(' + bg_r + ',' + bg_g + ',' + bg_b + ',1)';
 		$('#score').animate({color: scoreColor});
@@ -104,12 +146,14 @@ $(document).ready(function(){
 		prevcell = $curcell;
 		if(cnt >= 100)
 			$('#win-modal').modal();
+		setCandidate();
+		return true;
 	}
 	
 	// Check if a given cell is already filled
 	function isFilled($cell)
 	{
-		return ($cell.attr('data-filled') == 'true');
+		return ($cell.attr('data-state') == 'filled');
 	}
 	
 	// Get the cell with the given coords
@@ -118,15 +162,18 @@ $(document).ready(function(){
 	}
 	
 	// Set the next candidate cells
-	function setNext($curcell){
+	function setCandidate(){
 		var nextNum = 0;
 		nextCoords.forEach(function(entry){
 			var x = entry[1] + curx;
 			var y = entry[0] + cury;
 			if(x >= 1 && x <= 10 && y >= 1 && y <= 10){
 				var $nextcell = getCell(x,y);
-				if(changeCellColor($nextcell, nextColor, nextShadow))
+				if(changeCellColor($nextcell, nextColor, nextShadow)){
 					nextNum += 1;
+					$nextcell.attr('data-state', 'candidate');
+					$nextcell.css('cursor', 'pointer');
+				}
 			}
 		});
 		if(nextNum == 0){
@@ -144,9 +191,14 @@ $(document).ready(function(){
 		});
 		if(actx >= 1 && actx <= 10 && acty >= 1 && acty <= 10){
 			var $actcell = getCell(actx, acty);
-			changeCellColor($actcell, activeColor, activeShadow, true);
-			activex = actx;
-			activey = acty;
+			if(!isFilled($actcell)){
+				$actcell.animate({boxShadow: no_shadow, backgroundColor: activeColor}, 50, 'linear', function(){
+					$(this).css('box-shadow', 'inset 0 0 0 0 #000').animate({boxShadow: activeShadow}, 50, 'linear');
+				});
+				$actcell.attr('data-state', 'active');
+				activex = actx;
+				activey = acty;
+			}
 		}
 	}
 	
@@ -155,16 +207,27 @@ $(document).ready(function(){
 		if(actx >= 1 && actx <= 10 && acty >= 1 && acty <= 10)
 		{
 			var $actcell = getCell(actx, acty);
-			changeCellColor($actcell, nextColor, nextShadow, true);
+			if(!isFilled($actcell)){
+				if($actcell.attr('data-state') == 'active'){
+					$actcell.animate({boxShadow: no_shadow, backgroundColor: nextColor}, 50, 'linear', function(){
+						$(this).css('box-shadow', 'outset 0 0 0 0 #000').animate({boxShadow: nextShadow}, 50, 'linear');
+					});
+					$actcell.attr('data-state', 'candidate');
+				}
+			}
 		}
 	}
 	
 	// Reset a cell to its initial color, if it has not been filled yet
 	function resetIfEmpty(actx, acty){
-		if(actx >= 1 && actx <= 10 && acty >= 1 && acty <= 10)
+		if(actx >= 1 && actx <= 10 && acty >= 1 && acty <= 10 && (actx != curx
+			|| acty != cury))
 		{
 			var $actcell = getCell(actx, acty);
-			changeCellColor($actcell, bg_original, shadow_original);
+			if(changeCellColor($actcell, bg_original, shadow_original)){
+				$actcell.attr('data-state', 'empty');
+				$actcell.css('cursor', 'default');
+			}
 		}
 	}
 	
@@ -218,32 +281,12 @@ $(document).ready(function(){
 				setActive(curx - 2, cury + 2);
 				break;
 			case 'setNext':
-				var $actcell = getCell(activex, activey);
-				if($actcell && !isFilled($actcell) && (activex != curx || activey != cury))
-				{
-					var oldx = curx;
-					var oldy = cury;
-					curx = activex;
-					cury = activey;
-					setCur();
-					nextCoords.forEach(function(entry){
-						var x = entry[1] + oldx;
-						var y = entry[0] + oldy;
-						resetIfEmpty(x, y);
-					});
-				}
+				setNext();
 				break;
 			default:
 				break;
 		}
 		lastaction = keyboard.action;
-	}
-	
-	// Set the current cell, writing inside the current number
-	function setCur(){
-		var $curcell = $('.grid-cell[data-coord="' + cury + '-' + curx + '"]');
-		setNumber($curcell);
-		setNext($curcell);
 	}
 	
 	// key event binding
@@ -272,9 +315,9 @@ $(document).ready(function(){
 
 	function resetGame()
 	{
-		$('.grid-cell').attr('data-filled', '');
-		$('.grid-cell').text('');
-		$('.grid-cell').attr('style', '');
+		$cells.attr('data-state', 'empty');
+		$cells.text('');
+		$cells.attr('style', '');
 		initGame();
 	}
 
