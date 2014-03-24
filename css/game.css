@@ -5,6 +5,7 @@ html{
 
 body{
 	background-image: url('../img/metal.png');
+	background-color: #797979;
 	background-repeat: repeat;
 	background-position: center;
 	height: 100%;
