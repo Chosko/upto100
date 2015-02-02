@@ -24,6 +24,20 @@ h1{
   font-weight: bold;
 }
 
+.bychosko{
+  display: block;
+  position: absolute;
+  margin: -25px 0 0 15px;
+}
+
+.bychosko a,
+.bychosko a:focus,
+.bychosko a:hover,
+.bychosko a:active{
+  color: black;
+  font-weight: bold;
+}
+
 .big-wrapper{
   display: table;
   width: 100%;
